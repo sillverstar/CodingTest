@@ -33,8 +33,14 @@ public class Main {
             //System.out.println();
         }
 
-        for (int out : outputArr) {
-            System.out.print(out + " ");
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < outputArr.length; i++) {
+            sb.append(outputArr[i]);
+            if (i < outputArr.length - 1) {
+                sb.append(" ");
+            }
         }
+        System.out.println(sb.toString());
     }
 }
