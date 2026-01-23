@@ -1,19 +1,22 @@
 import java.io.*;
+import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int n = Integer.parseInt(st.nextToken());
 
         boolean[][] inputArr = new boolean[100][100];
 
         for (int i = 0; i < n; i++) {
-            String[] line = br.readLine().split(" ");
-            int x = Integer.parseInt(line[0]);
-            int y = Integer.parseInt(line[1]);
+            st = new StringTokenizer(br.readLine());
+            int x = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
 
-            for (int j = x; j < x + 10; j++) {
-                for (int k = y; k < y + 10; k++) {
+            for (int j = y; j < y + 10; j++) {
+                for (int k = x; k < x + 10; k++) {
                     inputArr[j][k] = true;
                 }
 
