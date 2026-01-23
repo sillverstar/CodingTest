@@ -15,8 +15,8 @@ public class Main {
             int x = Integer.parseInt(st.nextToken());
             int y = Integer.parseInt(st.nextToken());
 
-            for (int j = y; j < y + 10; j++) {
-                for (int k = x; k < x + 10; k++) {
+            for (int j = x; j < x + 10; j++) {
+                for (int k = y; k < y + 10; k++) {
                     inputArr[j][k] = true;
                 }
 
