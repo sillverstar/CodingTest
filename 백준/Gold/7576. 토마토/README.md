@@ -1,6 +1,7 @@
 # [Gold V] 토마토 - 7576 
 
 [문제 링크](https://www.acmicpc.net/problem/7576) 
+[정리 링크](https://ablaze-rhodium-57b.notion.site/2f28ea85a36080a19f31f7da1f240f53?source=copy_link)
 
 ### 성능 요약
 
