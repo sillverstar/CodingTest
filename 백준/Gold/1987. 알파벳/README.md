@@ -1,6 +1,9 @@
 # [Gold IV] 알파벳 - 1987 
 
 [문제 링크](https://www.acmicpc.net/problem/1987) 
+<br>
+[정리 링크](https://www.notion.so/2f38ea85a360802faeb6f44c881ae9f6?source=copy_link)
+
 
 ### 성능 요약
 
