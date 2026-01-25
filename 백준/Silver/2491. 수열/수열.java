@@ -11,40 +11,30 @@ public class Main {
         for (int i = 0; i < n; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
-        //System.out.println(Arrays.toString(arr));
 
+        int cntMax = 1;
 
-        int cntMax = 0;
-        List<Integer> resultDec = new ArrayList<>();
-        List<Integer> resultInc = new ArrayList<>();
-        resultInc.add(arr[0]);
-        resultDec.add(arr[0]);
+        int cntInc = 1;
+        int cntDec = 1;
         for (int i = 1; i < n; i++) {
-            if (arr[i] >= resultInc.get(resultInc.size() - 1)) {
-                resultInc.add(arr[i]);
+            // 중가
+            if (arr[i] >= arr[i - 1]) {
+                cntInc++;
             }
             else {
-                if (cntMax < resultInc.size()) {
-                    cntMax = resultInc.size();
-                }
-                resultInc.clear();
-                resultInc.add(arr[i]);
+                cntInc = 1;
             }
 
-            if (arr[i] <= resultDec.get(resultDec.size() - 1)) {
-                resultDec.add(arr[i]);
+            // 감소
+            if (arr[i] <= arr[i - 1]) {
+                cntDec++;
             }
             else {
-                if (cntMax < resultDec.size()) {
-                    cntMax = resultDec.size();
-                }
-                resultDec.clear();
-                resultDec.add(arr[i]);
+                cntDec = 1;
             }
+            cntMax = Math.max(cntMax, cntInc);
+            cntMax = Math.max(cntMax, cntDec);
         }
-
-        cntMax = Math.max(cntMax, resultInc.size());
-        cntMax = Math.max(cntMax, resultDec.size());
 
 //        System.out.println(Arrays.toString(resultDec.toArray()));
 //        System.out.println(Arrays.toString(resultInc.toArray()));
