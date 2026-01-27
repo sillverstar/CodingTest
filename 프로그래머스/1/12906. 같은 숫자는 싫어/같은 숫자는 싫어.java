@@ -1,10 +1,10 @@
 import java.util.*;
 
 public class Solution {
-    public int[] solution(int []arr) {
+    public Stack<Integer> solution(int []arr) {
         Stack<Integer> st = new Stack<>();
-        st.push(arr[arr.length - 1]);
-        for (int i = arr.length - 2; i >= 0; i--) {
+        st.push(arr[0]);
+        for (int i = 1; i < arr.length; i++) {
             if (st.peek() == arr[i]) {
                 continue;
             }
@@ -12,13 +12,6 @@ public class Solution {
                 st.push(arr[i]);
             }
         }
-        
-        int[] answer = new int[st.size()];
-        int cnt = 0;
-        while (st.size() != 0) {
-            answer[cnt++] = st.pop();
-        }
-        
-        return answer;
+        return st;
     }
 }
