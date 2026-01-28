@@ -13,19 +13,14 @@ class Solution
 		
 		for (int i = 1; i < t + 1; i++) {
 			String inputS = br.readLine();
-			List<Integer> inputArr = new ArrayList<>();
 		
-			for (int j = 0; j <inputS.length(); j++) {
-				inputArr.add(Character.getNumericValue(inputS.charAt(j)));
-			}
-			
 			int cnt = 0;
-			boolean status = false;
+			char status = '0';
 			
-			for (int j = 0; j < inputArr.size(); j++) {
-				if (inputArr.get(j) != (status ? 1 : 0)) {
+			for (int j = 0; j < inputS.length(); j++) {
+				if (inputS.charAt(j) != status) {
 					cnt++;
-					status = !status;
+					status = (status == '0' ? '1' : '0');
 				}
 			}
 			System.out.printf("#%d %d%n", i, cnt);
