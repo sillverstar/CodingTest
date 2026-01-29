@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.util.*;
 
@@ -15,7 +14,6 @@ public class Solution {
                 dq.add(Integer.parseInt(st.nextToken()));
             }
             
-            // System.out.print(dq);
             while (dq.getLast() != 0) {
                 for (int i = 1; i <= 5; i++) {
                     int dqFirst = dq.removeFirst() - i;
@@ -34,7 +32,7 @@ public class Solution {
             for (int d : dq) {
                 sb.append(' ').append(d);
             }
-            System.out.println(sb.toString());
+            System.out.println(sb);
         }
     }
 }
