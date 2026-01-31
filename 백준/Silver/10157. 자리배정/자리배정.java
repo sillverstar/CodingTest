@@ -16,11 +16,6 @@ public class Main {
         	System.out.print(0);
         	return;
         }
-        else if (k == 1) {
-            System.out.println("1 1");
-            return;
-        }
-        
         int top = 0, bottom = r - 1;
         int left = 0, right = c - 1;
         
