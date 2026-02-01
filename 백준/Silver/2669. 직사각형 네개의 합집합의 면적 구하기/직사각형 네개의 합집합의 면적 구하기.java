@@ -4,7 +4,7 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) throws IOException {
     	
-    	int[][] arr = new int[100][100]; // 0으로 초기화
+    	boolean[][] arr = new boolean[100][100]; // false으로 초기화
     	
     	// 4개의 입력
     	int cnt = 0;
@@ -19,8 +19,8 @@ public class Main {
     		
     		for (int i = y1; i < y2; i++) {
     			for (int j = x1; j < x2; j++) {
-    				if (arr[i][j] == 0) {
-    					arr[i][j] = 1;
+    				if (arr[i][j] == false) {
+    					arr[i][j] = true;
     					cnt++;
     				}
     			}
