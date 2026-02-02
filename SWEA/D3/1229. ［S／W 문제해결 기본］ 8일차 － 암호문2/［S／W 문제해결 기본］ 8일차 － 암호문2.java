@@ -24,12 +24,9 @@ public class Solution {
             	int param2 = Integer.parseInt(st.nextToken());
             	
                 if (cmd.equals("I")) {
-                	List<String> temp = new ArrayList<>(param2);
                 	for (int j = 0; j < param2; j++) {
-                		temp.add(st.nextToken());
+                		cipher.add(param1 + j, st.nextToken());
                 	}
-                	cipher.addAll(param1, temp);
-                	
                 }
                 else { // cmd.equals("D")
                 	for (int j = 0; j < param2; j++) {
