@@ -28,8 +28,8 @@ public class Solution {
 					--e;
 				} else {
 					if (sum == m) {
-						++s;
-						--e;
+                        maxSum = sum;
+                        break;
 					}
 					else {
 						++s;
