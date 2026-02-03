@@ -1,46 +1,46 @@
-
-
-import java.io.*;
 import java.util.*;
-
+import java.io.*;
 
 public class Main {
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        
-        int T = Integer.parseInt(br.readLine());
-        
-        int[][] inputArr = new int[T][3]; // (pos, value, ans)
-        Deque<int[]> stack = new ArrayDeque<>();  // stack처럼 사용
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < T; i++) {        	
-        	inputArr[i][0] = i + 1;
-            inputArr[i][1] = Integer.parseInt(st.nextToken());
-        }
-        //System.out.println(Arrays.deepToString(inputArr));
-        // System.out.println(now);
-        for (int i = 0; i < T; i++) {
-        	// 스택이 비어있지 않고, 꼭대기 값이 현재보다 작으면 pop;버리기
-        	while (!stack.isEmpty() && stack.peek()[1] < inputArr[i][1]) {
-                stack.pop();
-            }
-        	
-        	
-        	if (!stack.isEmpty()) { // 스택이 비어있지 않으면
-                inputArr[i][2] = stack.peek()[0]; // pos
-            }
-        	// 비어있는 경우는 이미 초기값이 0으로 세팅되어 있어서 처리 x
-        	stack.push(inputArr[i]);
-
-        }
-
-    	
-        // 출력: ans만 뽑아서 출력 (문제 정답 형태)
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < T; i++) {
-            sb.append(inputArr[i][2]).append(' ');
-        }
-        System.out.print(sb);
-    }
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		int n = Integer.parseInt(br.readLine());
+		
+		// 입력 배열
+		int[] arr = new int[n];
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < n; i++) {
+			arr[i] = Integer.parseInt(st.nextToken());
+		}
+		
+		Deque<int[]> stack = new ArrayDeque<>(); // 값, 위치
+		
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < n; i++) {
+			while (true) {
+				if (stack.isEmpty()) {
+					sb.append(0).append(' ');
+					stack.push(new int[] {arr[i], i + 1});
+					break;
+				}
+				
+				else { // 스택에 요소가 있는 경우
+					if (stack.peek()[0] < arr[i]) {
+						stack.pop();
+					}
+					else { // 스택.peek값이 현재 값보다 크거나 같은 경우
+						sb.append(stack.peek()[1]).append(' ');
+						stack.push(new int[] {arr[i], i + 1});
+						break;
+					}
+				}
+			}		
+//			for (int[] s : stack) {
+//				System.out.println(Arrays.toString(s));
+//			}
+//			System.out.println();
+		}
+		System.out.println(sb);
+	}
 }
