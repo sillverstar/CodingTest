@@ -55,28 +55,15 @@ public class Main {
 		n = Integer.parseInt(br.readLine());
 		arr = new int[n][n];
 		
-		int maxRange = -1, minRange = -1;
-		
 		for (int i = 0; i < n; i++) {
 			st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < n; j++) {
 				arr[i][j] = Integer.parseInt(st.nextToken());
-				if (i == 0  && j == 0) {
-					maxRange = minRange = arr[i][j];
-				}
-				else {
-					if (arr[i][j] > maxRange) {
-						maxRange = arr[i][j];
-					}
-					else if (arr[i][j] < minRange){
-						minRange = arr[i][j];
-					}
-				}
 			}
 		}
 		int maxCnt = 1;
 		
-		for (int height = minRange - 1; height < maxRange; height++) {
+		for (int height = 0; height <= 100; height++) {
 			visited = new boolean[n][n];
 
 			water(height);
