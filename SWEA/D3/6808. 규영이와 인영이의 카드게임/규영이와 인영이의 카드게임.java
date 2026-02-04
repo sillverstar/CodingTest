@@ -3,17 +3,16 @@ import java.io.*;
 
 public class Solution {
 	static boolean[] visited;
-	static int[] selected;
 	static int[] arr;
 	static int kyuScore, inScore;
 	static int kyuWin, inWin;
 	
 	public static void dfs(int depth) {
-		if (depth == selected.length) {
+		if (depth == 9) {
 			if (kyuScore > inScore) {
 				kyuWin++;
 			}
-			if (kyuScore < inScore) {
+			else if (kyuScore < inScore) {
 				inWin++;
 			}
 			return;
@@ -23,15 +22,14 @@ public class Solution {
 			if (visited[x]) continue;
 			
 			visited[x] = true;
-			// 값 넣고
-			selected[depth] = x;
+			// x 값 기준으로 점수 확인
 			
-			int gain = arr[depth] + selected[depth];
+			int gain = arr[depth] + x;
 			// 비교
-			if (arr[depth] > selected[depth]) {
+			if (arr[depth] > x) {
 				kyuScore += gain;
 			}
-			else if (arr[depth] < selected[depth]) {
+			else if (arr[depth] < x) {
 				inScore += gain;
 			}
 			
@@ -39,10 +37,10 @@ public class Solution {
 			
 			
 			// 점수도 백트래킹을 해줘야 함
-			if (arr[depth] > selected[depth]) {
+			if (arr[depth] > x) {
 				kyuScore -= gain;
 			}
-			else if (arr[depth] < selected[depth]) {
+			else if (arr[depth] < x) {
 				inScore -= gain;
 			}
 			
@@ -58,7 +56,6 @@ public class Solution {
 		StringBuilder sb = new StringBuilder();
 		for (int t = 1; t <= T; t++) {
 			visited = new boolean[19];
-			selected = new int[9];
 			kyuScore = 0;
 			inScore = 0;
 			kyuWin = 0;
