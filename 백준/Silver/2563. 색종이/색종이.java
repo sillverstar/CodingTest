@@ -1,5 +1,5 @@
 import java.io.*;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -8,7 +8,9 @@ public class Main {
 
         int n = Integer.parseInt(st.nextToken());
 
-        boolean[][] inputArr = new boolean[100][100];
+        boolean[][] visited = new boolean[100][100];
+        
+        int result = 0;
 
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
@@ -17,18 +19,12 @@ public class Main {
 
             for (int j = x; j < x + 10; j++) {
                 for (int k = y; k < y + 10; k++) {
-                    inputArr[j][k] = true;
+                	if (!visited[j][k]) {
+                        visited[j][k] = true;
+                        result++;
+                	}
                 }
 
-            }
-        }
-
-        int result = 0;
-        for (int i = 0; i < 100; i++) {
-            for (int j = 0; j < 100; j++) {
-                if (inputArr[i][j]) {
-                    result++;
-                }
             }
         }
         System.out.println(result);
