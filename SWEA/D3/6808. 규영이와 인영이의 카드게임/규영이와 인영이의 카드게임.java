@@ -2,8 +2,10 @@ import java.util.*;
 import java.io.*;
 
 public class Solution {
-	static boolean[] visited;
-	static int[] arr;
+	static boolean[] kyuVisited;
+	static boolean[] inVisited;
+	static int[] kyuArr;
+	static int[] inArr;
 	static int kyuScore, inScore;
 	static int kyuWin, inWin;
 	
@@ -18,18 +20,18 @@ public class Solution {
 			return;
 		}
 		
-		for (int x = 1; x <= 18; x++) {
-			if (visited[x]) continue;
+		for (int x = 0; x < 9; x++) {
+			if (inVisited[x]) continue;
 			
-			visited[x] = true;
-			// x 값 기준으로 점수 확인
+			inVisited[x] = true;
+			int in = inArr[x];
 			
-			int gain = arr[depth] + x;
+			int gain = kyuArr[depth] + in;
 			// 비교
-			if (arr[depth] > x) {
+			if (kyuArr[depth] > in) {
 				kyuScore += gain;
 			}
-			else if (arr[depth] < x) {
+			else if (kyuArr[depth] < in) {
 				inScore += gain;
 			}
 			
@@ -37,14 +39,14 @@ public class Solution {
 			
 			
 			// 점수도 백트래킹을 해줘야 함
-			if (arr[depth] > x) {
+			if (kyuArr[depth] > in) {
 				kyuScore -= gain;
 			}
-			else if (arr[depth] < x) {
+			else if (kyuArr[depth] < in) {
 				inScore -= gain;
 			}
 			
-			visited[x] = false;
+			inVisited[x] = false;
 		}
 	}
 	
@@ -55,19 +57,30 @@ public class Solution {
 
 		StringBuilder sb = new StringBuilder();
 		for (int t = 1; t <= T; t++) {
-			visited = new boolean[19];
+			kyuVisited = new boolean[19];
+			inVisited = new boolean[9];
+			
 			kyuScore = 0;
 			inScore = 0;
 			kyuWin = 0;
 			inWin = 0;
 			
-			// 입력
+			// 규영 카드(입력)
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			arr = new int[9];
+			kyuArr = new int[9];
 			
 			for (int i = 0; i < 9; i++) {
-				arr[i] = Integer.parseInt(st.nextToken());
-				visited[arr[i]] = true;
+				kyuArr[i] = Integer.parseInt(st.nextToken());
+				kyuVisited[kyuArr[i]] = true;
+			}
+			
+			// 인영 카드(생성)
+			inArr = new int[9];
+			int idx = 0;
+			for (int i = 1; i < 19; i++) {
+				if (!kyuVisited[i]) {
+					inArr[idx++] = i;
+				}
 			}
 
 			dfs(0);
