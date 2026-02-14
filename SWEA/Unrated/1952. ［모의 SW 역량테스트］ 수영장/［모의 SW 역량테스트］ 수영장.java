@@ -22,7 +22,7 @@ public class Solution {
 			
 			st = new StringTokenizer(br.readLine());
 			for (int i = 1; i <= 12; i++) {
-				plan[i] = Integer.parseInt(st.nextToken());
+				plan[i] = Math.min(Integer.parseInt(st.nextToken())* day, month);
 			}
 			
 			ans = year;
@@ -50,11 +50,8 @@ public class Solution {
 			return;
 		}
 		
-		// 1일권
-		dfs(cnt + 1, cost + plan[cnt] * day);
-		
-		// 1달권
-		dfs(cnt + 1, cost + month);
+		// 1일권 + 1달권
+		dfs(cnt + 1, cost + plan[cnt]);
 		
 		// 3달권
 		dfs(cnt + 3, cost + three);
