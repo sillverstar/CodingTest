@@ -1,7 +1,9 @@
 import java.io.*;
+import java.util.Arrays;
 
 public class Solution {
 	static int maxTurn;
+	static int[] memo; // 각 숫자에 도달했을 때의 최댓값을 저장.
 	
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -13,6 +15,10 @@ public class Solution {
 			int n = Integer.parseInt(br.readLine());
 			
 			maxTurn = 0;
+			
+			// 메모 추가
+			memo = new int[100000]; // 입력 범위 1 ~ 99999
+			Arrays.fill(memo, -1);
 			
 			dfs(n, 0);
             sb.append('#').append(t).append(' ').append(maxTurn).append('\n');
@@ -26,6 +32,11 @@ public class Solution {
 			maxTurn = Math.max(maxTurn, turn);
 			return;
 		}
+		
+		// 이미 지금 num에 대해 지금보다 더 많거나 같은 turn으로 온 적이 있다면
+		// 현재 탐색이 의미 X -> return;
+		if (memo[num] >= turn) return; 
+		memo[num] = turn;
 		
 		int[] numbers = intToArray(num);
 		
