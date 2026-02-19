@@ -45,13 +45,32 @@ public class Solution {
 			for (int j = 0; j < n; j++) {
 				// 방문한 적 없고, X보다 클 때
 				if (!visited[i][j] && cheese[i][j] > x) {
-					bfs(x, i, j);
-					//dfs(x);
+					//bfs(x, i, j);
+					dfs(x, i, j);
 					cnt++;
 				}
 			}
 		}
 		maxCnt = Math.max(maxCnt, cnt);
+	}
+	
+	private static void dfs(int x, int sr, int sc) {
+		int r = sr;
+		int c = sc;
+		visited[sr][sc] = true;
+		
+		// 4방 탐색
+		for (int i = 0; i < 4; i++) {
+			int nr = r + dr[i];
+			int nc = c + dc[i];
+			
+			// 범위 확인
+			if (nr < 0 || nr >= n || nc < 0 || nc >= n) continue;
+			// 확장 확인
+			if (visited[nr][nc] || cheese[nr][nc] <= x) continue;
+			visited[nr][nc] = true;
+			dfs(x, nr, nc);
+		}
 	}
 	
 	
