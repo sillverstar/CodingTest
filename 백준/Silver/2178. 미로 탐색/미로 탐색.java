@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	static int n, m, minCnt;
+	static int n, m; // 전역변수 제거
 	static int[][] map;
 	static boolean[][] visited;
 	
@@ -26,7 +26,6 @@ public class Main {
 		}
 		
 		 bfs();
-		 System.out.println(minCnt);
 	}
 
 	private static void bfs() {
@@ -44,7 +43,7 @@ public class Main {
 			
 			// 탐색 종료 조건
 			if (r == n-1 && c == m-1) {
-				minCnt = cnt;
+				System.out.println(cnt);
 				return;
 			}
 			
