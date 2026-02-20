@@ -1,13 +1,9 @@
 import java.util.*;
 import java.io.*;
 
-
-// 경로 출력 -> dfs
 public class Solution {
-
 	static int v, e;
 	static List<List<Integer>> graph;
-	static boolean[] visited;
 	static int[] inDegree, path;
 	static StringBuilder sb = new StringBuilder();
 	public static void main(String[] args) throws IOException {
@@ -21,7 +17,6 @@ public class Solution {
 			v = Integer.parseInt(st.nextToken()); // 정점 수
 			e = Integer.parseInt(st.nextToken()); // 간선 수
 			graph = new ArrayList<>();
-			visited = new boolean[v+1]; // 1부터 저장
 			inDegree = new int[v+1]; // same
 			path = new int[v+1]; // same
 		
@@ -55,15 +50,15 @@ public class Solution {
 		for (int idx = 1; idx < inDegree.length; idx++) {
 			if (inDegree[idx] == 0) {
 				q.offer(idx);
-				visited[idx] = true;
+				inDegree[idx]--;
 			}
 		}
 		
 		// 큐가 빌 때까지
 		while (!q.isEmpty()) {
 			int cur = q.poll();
-			sb.append(cur).append(' ');
 			
+			sb.append(cur).append(' ');
 			
 			// 연결된 리스트 삭제
 			for (int c : graph.get(cur)) {
@@ -72,13 +67,12 @@ public class Solution {
 			
 			// 인접 리스트 큐에 추가
 			for (int idx = 1; idx < inDegree.length; idx++) {
-				if (!visited[idx] && inDegree[idx] == 0) {
+				if (inDegree[idx] == 0) {
 					q.offer(idx);
-					visited[idx] = true;
+					inDegree[idx]--; // -1로 만들기
+					
 				}
 			}
 		}
-		
 	}
-	
 }
