@@ -33,7 +33,8 @@ public class Main {
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
 				if ((!visited[i][j]) && (map[i][j])) {
-					bfs(i, j);
+					//bfs(i, j);
+					dfs(i, j);
 					cnt++;
 				}
 			}
@@ -49,16 +50,16 @@ public class Main {
 		}
 		System.out.println(sb);
 	}
-
-	private static void bfs(int sr, int sc) {
+	
+	private static void dfs(int sr, int sc) {
 		int home = 0;
 		// 큐 생성
-		Deque<int[]> q = new ArrayDeque<>();
-		q.offer(new int[] {sr, sc});
+		Deque<int[]> stack = new ArrayDeque<>();
+		stack.offer(new int[] {sr, sc});
 		visited[sr][sc] = true;
 		
-		while (!q.isEmpty()) {
-			int[] cur = q.poll();
+		while (!stack.isEmpty()) {
+			int[] cur = stack.pop();
 			int r = cur[0];
 			int c = cur[1];
 			home++;
@@ -76,7 +77,7 @@ public class Main {
 				// 이미 방문한 경우 확인
 				if (visited[nr][nc]) continue;
 				
-				q.offer(new int[] {nr, nc});
+				stack.offer(new int[] {nr, nc});
 				visited[nr][nc] = true;
 			}
 		}
