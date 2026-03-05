@@ -2,67 +2,64 @@ import java.util.*;
 import java.io.*;
 
 public class Solution {
-	static int maxTree;
-	static int evens, odds;
 	
-	public static void main(String[] args) throws NumberFormatException, IOException {
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = null;
 		
 		int T = Integer.parseInt(br.readLine());
 		
+		StringBuilder sb = new StringBuilder();
 		for (int t = 1; t <= T; t++) {
+
+			// n
 			int n = Integer.parseInt(br.readLine());
 			
+			// 입력 + 최댓값 찾기
+			int maxTree = 0;
 			int[] tree = new int[n];
-			StringTokenizer st = new StringTokenizer(br.readLine());
+			st = new StringTokenizer(br.readLine());
 			for (int i = 0; i < n; i++) {
 				tree[i] = Integer.parseInt(st.nextToken());
+				if (maxTree < tree[i]) {
+					maxTree = tree[i];
+				}
 			}
-			Arrays.sort(tree);
-			maxTree = tree[n - 1];
 			
-			evens = 0;
-			odds = 0;
-			
-			for (int i = 0; i < n; i++ ) {
-				int diff = maxTree - tree[i];
-				evens += (diff / 2);
-				odds += (diff % 2);
+			// 가장 큰 나무와의 차이 게산
+			for (int i = 0; i < n; i++) {
+				tree[i] = maxTree - tree[i];
 			}
-
-			// 날짜 계산
-			int ans = countDays();
 			
-			System.out.println("#" + t + " " + ans);
+			
+			// 짝수 홀수 개수 게산
+			int even = 0;
+			int odd = 0;
+			for (int i = 0; i < n; i++) {
+				even += tree[i] / 2;
+				odd += tree[i] % 2;
+//				System.out.println(tree[i] + " : " + even + ", " + odd);
+			}
+			
+			while (even > (odd+1)) {
+				even -= 1;
+				odd += 2;
+			}
+//			System.out.println(even + ", " + odd);
+			
+			// 정답 계산
+			int ans = 0;
+			if (odd > even) {
+				ans = (odd - 1) * 2 + 1;
+			} else {
+				ans = even * 2;
+			}
+			sb.append('#').append(t).append(' ').append(ans).append('\n');
+			
 		}
-	}
-	
-	private static int countDays() {
-		int days = 0;
-		while (true) {
-			// 만약에 days 안에 조합이 가능하면
-			if (checkDays(days)) {
-				return days;
-			}
-			days++;
-		}
-	}
-	
-	private static boolean checkDays(int days) {
-	    int oddDay = (days + 1) / 2;
-	    int evenDay = days / 2;  
-	    
-	    if (oddDay < odds) return false; // 1 충족 여부 확인
-	    
-	    // 바뀌는 1 처리 4 -> x2x2(x) 121(o)
-	    int evenToOdd = (oddDay - odds) / 2;
-	    
-	    // 2 처리
-	    int newEvens = (evens > evenToOdd)? evens - evenToOdd : 0;
-	    if (evenDay >= newEvens) {
-	    	return true;
-	    }
-		return false; 
+		
+		System.out.println(sb);
+		
 	}
 
 }
