@@ -1,78 +1,76 @@
 import java.util.*;
 import java.io.*;
 
+// 가중치가 모두 1, 선후관계가 O
+
+
 public class Solution {
 	static int v, e;
 	static List<List<Integer>> graph;
-	static int[] inDegree, path;
-	static StringBuilder sb = new StringBuilder();
+	static int[] indegree;
+	static StringBuilder sb;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = null;
 		
-		int T = 10;
-		
-		for (int t = 1; t <= T; t++) {
-			StringTokenizer st = new StringTokenizer(br.readLine());
+		// 10개의 테스트 케이스
+		sb = new StringBuilder();
+		for (int t = 1; t <= 10; t++) {
+			st = new StringTokenizer(br.readLine());
 			
-			v = Integer.parseInt(st.nextToken()); // 정점 수
-			e = Integer.parseInt(st.nextToken()); // 간선 수
+			v = Integer.parseInt(st.nextToken());
+			e = Integer.parseInt(st.nextToken());
+			
+			// graph 초기화
 			graph = new ArrayList<>();
-			inDegree = new int[v+1]; // same
-			path = new int[v+1]; // same
-		
-			// 노드 리스트 생성
 			for (int i = 0; i <= v; i++) {
 				graph.add(new ArrayList<>());
 			}
 			
-			// 두 개씩 a b: a -> b
+			indegree = new int[v+1];
+			
 			st = new StringTokenizer(br.readLine());
 			for (int i = 0; i < e; i++) {
-				int prev = Integer.parseInt(st.nextToken());
-				int next = Integer.parseInt(st.nextToken());
+				int from = Integer.parseInt(st.nextToken());
+				int to = Integer.parseInt(st.nextToken());
 				
-				graph.get(prev).add(next);
-				inDegree[next]++;
+				graph.get(from).add(to);
+				indegree[to]++;
 			}
 			
-			// 위상 정렬
 			sb.append('#').append(t).append(' ');
-			bfs();
-			sb.append('\n');
+			topo();
 		}
 		System.out.println(sb);
 	}
-	
-	
-	private static void bfs() {
-		Queue<Integer> q = new ArrayDeque<>();
-		// 초기값 넣기
-		for (int idx = 1; idx < inDegree.length; idx++) {
-			if (inDegree[idx] == 0) {
-				q.offer(idx);
-				inDegree[idx]--;
+	private static void topo() {
+		
+		// 큐 생성
+		Deque<Integer> q = new ArrayDeque<>();
+		
+		// indegree가 0인 경우 넣기
+		for (int i = 1; i <= v; i++) {
+			if (indegree[i] == 0) {
+				q.offer(i);
 			}
 		}
 		
-		// 큐가 빌 때까지
+		
 		while (!q.isEmpty()) {
 			int cur = q.poll();
 			
 			sb.append(cur).append(' ');
 			
-			// 연결된 리스트 삭제
-			for (int c : graph.get(cur)) {
-				inDegree[c]--;
-			}
-			
-			// 인접 리스트 큐에 추가
-			for (int idx = 1; idx < inDegree.length; idx++) {
-				if (inDegree[idx] == 0) {
-					q.offer(idx);
-					inDegree[idx]--; // -1로 만들기
-					
+			for (int next : graph.get(cur)) {
+				// indegree--
+				indegree[next]--;
+				
+				// indegree가 0인 경우 넣기
+				if (indegree[next] == 0) {
+					q.offer(next);
 				}
 			}
 		}
+		sb.append('\n');
 	}
 }
