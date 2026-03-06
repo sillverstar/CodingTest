@@ -45,7 +45,7 @@ public class Solution {
 			Arrays.fill(dp[i], Integer.MAX_VALUE);
 		}
 		
-		PriorityQueue<int[]> q = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+		PriorityQueue<int[]> q = new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]));
 		
 		q.offer(new int[] {0, 0, 0});
 		dp[0][0] = 0;
