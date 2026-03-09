@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	static Deque<Integer> stack;
+	static List<Integer> stack;
 
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -10,7 +10,7 @@ public class Main {
 		
 		int n = Integer.parseInt(br.readLine());
 		
-		stack = new ArrayDeque<>();
+		stack = new ArrayList<>();
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < n; i++) {
 			st = new StringTokenizer(br.readLine());
@@ -19,11 +19,11 @@ public class Main {
 			
 			if (command == 1) {
 				int x = Integer.parseInt(st.nextToken());
-				stack.push(x);
+				stack.add(x);
 			}
 			else if (command == 2) {
-				if (!stack.isEmpty()) {
-					int pop = stack.pop();
+				if (stack.size() != 0) {
+					int pop = stack.remove(stack.size() - 1);
 					sb.append(pop).append('\n');
 				} else {
 					sb.append(-1).append('\n');
@@ -40,8 +40,8 @@ public class Main {
 				}
 			}
 			else if (command == 5) {
-				if (!stack.isEmpty()) {
-					sb.append(stack.peek()).append('\n');
+				if (stack.size() != 0) {
+					sb.append(stack.get(stack.size()-1)).append('\n');
 				} else {
 					sb.append(-1).append('\n');
 				}
