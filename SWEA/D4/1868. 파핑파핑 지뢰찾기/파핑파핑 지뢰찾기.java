@@ -31,26 +31,19 @@ public class Solution {
 				}
 			}
 			
-
-			//bfs();
-
 			for (int i = 0;i < n; i++) {
 				for (int j = 0; j < n; j++) {
 					if (map[i][j] != -1) {
-						bfs(i, j);
+						countMap(i, j);
 					}
 				}
-			}
-			
-			for (int i = 0; i < n; i++) {
-				Arrays.fill(visited[i], false);
 			}
 			
 			int count = 0;
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n; j++) {
 					if ((map[i][j] == 0) && (!visited[i][j])) {
-						click(i, j, map[i][j]);
+						click(i, j);
 						count++;
 					}
 				}
@@ -68,24 +61,20 @@ public class Solution {
 			sb.append('#').append(t).append(' ').append(count).append('\n');
 		}
 		System.out.println(sb);
-		
-
 	}
 
 
-	private static void click(int sr, int sc, int value) {
+	private static void click(int sr, int sc) {
 		Deque<int[]> q = new ArrayDeque<>();
-		q.offer(new int[] {sr, sc, value});
+		q.offer(new int[] {sr, sc});
 		visited[sr][sc] = true;
 		
 		while (!q.isEmpty()) {
 			int[] cur = q.poll();
 			int r = cur[0];
 			int c = cur[1];
-			int val = cur[2];
-			map[r][c] = -2;
 			
-			if (val == 0) {
+			if (map[r][c] == 0) {
 				for (int i = 0; i < 8; i++) {
 					int nr = r + dr[i];
 					int nc = c + dc[i];
@@ -94,16 +83,17 @@ public class Solution {
 					if (map[nr][nc] == -1) continue;
 					
 					if (map[nr][nc] >= 0 && !visited[nr][nc]) {
-						q.offer(new int[] {nr, nc, map[nr][nc]});
+						q.offer(new int[] {nr, nc});
 						visited[nr][nc] = true;
 					}
 				}
 			}
+			
 		}
 	}
 
 
-	private static void bfs(int r, int c) {
+	private static void countMap(int r, int c) {
 		for (int i = 0; i < 8; i++) {
 			int nr = r + dr[i];
 			int nc = c + dc[i];
