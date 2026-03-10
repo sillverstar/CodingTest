@@ -2,14 +2,12 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	static Deque<Character> stack;
 
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		int T = Integer.parseInt(br.readLine());
 		
-		stack = new ArrayDeque<>();
 		StringBuilder sb = new StringBuilder();
 		for (int t = 0; t < T; t++) {
 			String s = br.readLine();
@@ -26,7 +24,7 @@ public class Main {
 	}
 
 	private static boolean check(String s) {
-		stack.clear();
+		Deque<Character> stack =new ArrayDeque<>();
 		for (int i = 0; i < s.length(); i++) {
 			char tmp = s.charAt(i);
 			if (tmp == ')') {
@@ -40,11 +38,7 @@ public class Main {
 			}
 		}
 		
-		if (!stack.isEmpty()) {
-			return false;
-		} else {
-			return true;
-		}
+		return stack.isEmpty();
 		
 	}
 		
