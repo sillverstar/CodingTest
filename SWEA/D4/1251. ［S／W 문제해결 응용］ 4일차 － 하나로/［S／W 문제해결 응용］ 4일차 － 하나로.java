@@ -17,15 +17,13 @@ public class Solution {
 	static class Edge implements Comparable<Edge> {
 		int startIdx;
 		int endIdx;
-		Vertex start;
-		Vertex end;
 		long weight;
 		
 		public Edge(int startIdx, int endIdx) {
 			this.startIdx = startIdx;
 			this.endIdx = endIdx;
-			this.start = isLands[startIdx];
-			this.end = isLands[endIdx];
+			Vertex start = islands[startIdx];
+			Vertex end = islands[endIdx];
 			long subX = Math.abs(start.x - end.x);
 			long subY = Math.abs(start.y - end.y);
 			this.weight = subX*subX + subY*subY;
@@ -36,12 +34,9 @@ public class Solution {
 			return Long.compare(this.weight, o.weight);
 		}
 		
-		public String toString() {
-			return "(" + this.start.x + ", " + this.start.y + ") - (" + this.end.x + ", " + this.end.y + "): " + this.weight;
-		}
 	}
 
-	static Vertex[] isLands;
+	static Vertex[] islands;
 	static Edge[] edgeList;
 	static int[] parents;
 	static int N;
@@ -55,14 +50,14 @@ public class Solution {
 		for (int t = 1; t <= T; t++) {
 			N = Integer.parseInt(br.readLine());
 			
-			isLands = new Vertex[N];
+			islands = new Vertex[N];
 			// x, y 입력
 			StringTokenizer x = new StringTokenizer(br.readLine());
 			StringTokenizer y = new StringTokenizer(br.readLine());
 			for (int i = 0; i < N; i++) {
 				long tmpX = Long.parseLong(x.nextToken());
 				long tmpY = Long.parseLong(y.nextToken());
-				isLands[i] = new Vertex(tmpX, tmpY);
+				islands[i] = new Vertex(tmpX, tmpY);
 			}
 			
 			E = Double.parseDouble(br.readLine());
@@ -75,13 +70,15 @@ public class Solution {
 
 			makeSets();
 			
-			double ans = 0;
+			int count = 0;
+			long totalWeight = 0;
 			for (int i = 0; i < edgeList.length; i++) {
 				if (union(edgeList[i].startIdx, edgeList[i].endIdx)) {
-					ans += edgeList[i].weight * E;
+					totalWeight += edgeList[i].weight; // 실수를 곱해서 연산하는 대신 long으로 합을 먼저 전부 구하고 마지막에 E를 곱함
+					if (++count == N-1) break;
 				}
 			}
-			sb.append('#').append(t).append(' ').append(Math.round(ans)).append('\n');
+			sb.append('#').append(t).append(' ').append(Math.round(totalWeight * E)).append('\n');
 		}
 		System.out.println(sb);
 	}
@@ -99,8 +96,8 @@ public class Solution {
 	
 	
 	private static void makeSets() {
-		parents = new int[edgeList.length+1];
-		for (int i = 0; i <= edgeList.length; i++) {
+		parents = new int[N];
+		for (int i = 0; i < N; i++) {
 			parents[i] = -1;
 		}
 	}
