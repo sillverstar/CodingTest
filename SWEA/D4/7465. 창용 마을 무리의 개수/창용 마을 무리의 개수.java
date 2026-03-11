@@ -3,11 +3,11 @@ import java.io.*;
 
 public class Solution {
 	static int n, m;
-	static int[] parent, rank;
-	public static void main(String[] args) throws IOException {
+	static int[] parents;
+	
+	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = null;
-		
 		int T = Integer.parseInt(br.readLine());
 		
 		StringBuilder sb = new StringBuilder();
@@ -16,53 +16,53 @@ public class Solution {
 			
 			n = Integer.parseInt(st.nextToken());
 			m = Integer.parseInt(st.nextToken());
+		
+			makeSet();
 			
-			parent = new int[n+1];
-			rank = new int[n+1];
-			for (int i = 0; i <= n; i++) {
-				parent[i] = i;
-			}
-			
+			// 간선 입력 & union
 			for (int i = 0; i < m; i++) {
 				st = new StringTokenizer(br.readLine());
 				
 				int a = Integer.parseInt(st.nextToken());
 				int b = Integer.parseInt(st.nextToken());
-
+				
 				union(a, b);
 			}
-
-			// 개수 세기
-			Set<Integer> set = new HashSet<>();
-			for (int i = 1; i <= n; i++) {
-				set.add(find(i));
-			}
 			
-			sb.append('#').append(t).append(' ').append(set.size()).append('\n');
+			// 무리 count
+			int count = 0;
+			for (int i = 1; i <= n; i++) {
+				if (parents[i] < 0) count++;
+			}
+			sb.append('#').append(t).append(' ').append(count).append('\n');
 		}
-		System.out.print(sb);
+		System.out.println(sb);
 	}
-	
-	
-	private static void union(int a, int b) {
-		int aR = find(a);
-		int bR = find(b);
-		
-		if (aR == bR) return;
-		
-		if (rank[aR] < rank[bR]) {
-			parent[aR] = bR;
-		} else if (rank[bR] < rank[aR]) {
-			parent[bR] = aR;
-		} else if (rank[bR] == rank[aR]) {
-			parent[bR] = aR;
-			rank[aR]++;
+
+
+	private static void makeSet() {
+		parents = new int[n+1]; // 0번은 안 씀
+		for (int i = 0; i <= n; i++) {
+			parents[i] = -1;
 		}
 	}
-	
 	
 	private static int find(int x) {
-		if (x == parent[x]) return x;
-		return parent[x] = find(parent[x]);
+		if (parents[x] < 0) return x;
+		return parents[x] = find(parents[x]);
+	}
+	
+	private static void union(int a, int b) {
+		int aRoot = find(a);
+		int bRoot = find(b);
+		
+		if (aRoot == bRoot) return;
+		
+		if (parents[aRoot] > parents[bRoot]) {
+//			parents[bRoot] += parents[aRoot]; // 개수 갱신
+			parents[aRoot] = bRoot;
+		} else {
+			parents[bRoot] = aRoot;
+		}
 	}
 }
