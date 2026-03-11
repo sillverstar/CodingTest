@@ -59,9 +59,10 @@ public class Solution {
 		if (aRoot == bRoot) return;
 		
 		if (parents[aRoot] > parents[bRoot]) {
-//			parents[bRoot] += parents[aRoot]; // 개수 갱신
+			parents[bRoot] += parents[aRoot]; // 개수 갱신
 			parents[aRoot] = bRoot;
 		} else {
+			parents[aRoot] += parents[bRoot];
 			parents[bRoot] = aRoot;
 		}
 	}
