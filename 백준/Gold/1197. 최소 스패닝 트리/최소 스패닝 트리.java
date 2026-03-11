@@ -31,7 +31,7 @@ public class Main {
 		v = Integer.parseInt(st.nextToken());
 		e = Integer.parseInt(st.nextToken());
 		
-		makeSets();
+		makeSet();
 		
 		// 간선 입력
 		edgeList = new Edge[e];
@@ -48,17 +48,20 @@ public class Main {
 		Arrays.sort(edgeList);
 		
 		// 가중치 계산
-		int totalWeight = 0;
+		int count = 0;
+		long totalWeight = 0;
 		for (int i = 0; i < e; i++) {
 			if (union(edgeList[i].start, edgeList[i].end)) {
 				totalWeight += edgeList[i].weight;
+				
+				if (++count == v-1) break; // 간선이 v-1개 모두 선택되면 종료
 			}
 		}
 		
 		System.out.println(totalWeight);
 	}
 
-	private static void makeSets() {
+	private static void makeSet() {
 		parents = new int[v+1];
 		for (int i = 0; i <= v; i++) {
 			parents[i] = -1;
