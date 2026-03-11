@@ -2,97 +2,87 @@ import java.util.*;
 import java.io.*;
 
 public class Solution {
-
-	static class Edge implements Comparable<Edge> {
-		int start;
-		int end;
-		int weight;
+	
+	static class Node {
+		int vertex, weight;
+		Node next;
 		
-		public Edge(int start, int end, int weight) {
-			this.start = start;
-			this.end = end;
+		public Node(int vertex, int weight, Node next) {
+			this.vertex = vertex;
 			this.weight = weight;
-		}
-		
-		@Override
-		public int compareTo(Edge o) {
-			return Integer.compare(this.weight, o.weight);
+			this.next = next;
 		}
 	}
 	
-	static Edge[] edgeList;
-	static int[] parents;
-	static int V, E;
-	
-	public static void main(String[] args) throws NumberFormatException, IOException {
+	static int v, e;
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
+		StringTokenizer st = null;
 		int T = Integer.parseInt(br.readLine());
 		
 		StringBuilder sb = new StringBuilder();
 		for (int t = 1; t <= T; t++) {
-			StringTokenizer st = new StringTokenizer(br.readLine());
+			boolean[] visited; // MST에 포함된 정점
+			int[] minEdge; // MST와 연결되는 최소 비용
+			Node[] adjList; // 그래프
 			
-			V = Integer.parseInt(st.nextToken());
-			E = Integer.parseInt(st.nextToken());
+			st = new StringTokenizer(br.readLine());
 			
-			makeSets();
+			v = Integer.parseInt(st.nextToken());
+			e = Integer.parseInt(st.nextToken());
 			
-			edgeList = new Edge[E];
-			for (int i = 0; i < E; i++) {
+			
+			visited = new boolean[v+1]; // 정점 초기화 (false: 비트리, true: 트리)
+			minEdge = new int[v+1];
+			adjList = new Node[v+1];
+			
+			// 간선 입력
+			for (int i = 0; i < e; i++) {
 				st = new StringTokenizer(br.readLine());
 				
-				int s = Integer.parseInt(st.nextToken());
-				int e = Integer.parseInt(st.nextToken());
+				int from = Integer.parseInt(st.nextToken());
+				int to = Integer.parseInt(st.nextToken());
 				int w = Integer.parseInt(st.nextToken());
 				
-				edgeList[i] = new Edge(s, e, w);
+				adjList[from] = new Node(to, w, adjList[from]);
+				adjList[to] = new Node(from, w, adjList[to]);
 			}
-
-			// 가중치 기반 정렬
-			Arrays.sort(edgeList);
 			
-			long ans = 0;
-			for (Edge edge : edgeList) {
-				if (union(edge.start, edge.end)) {
-					// union 성공
-					ans += edge.weight;
+			Arrays.fill(minEdge, Integer.MAX_VALUE);
+			minEdge[1] = 0; // 시작 위치 1
+			
+			PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[1], b[1]));
+			pq.offer(new int[] {1, 0}); // {정점 번호, 가중치}
+			
+			long result = 0;
+			int count = 0;
+			while (!pq.isEmpty()) {
+				// 1. 최소 정점 꺼내기
+				int[] cur = pq.poll();
+				int minVertex = cur[0]; // 최소 비용을 가진 정점의 인덱스
+				int min = cur[1]; // 현재까지 발견한 가장 작은 간선 비용
+				
+				if (visited[minVertex]) continue; // 이미 MST에 포함되어 있으면 continue;
+				
+				// 2. MST에 추가
+				visited[minVertex] = true;
+				result += min;
+				count++;
+				
+				if (count == v) break; // 정점 개수만큼 돌았으면 break;
+				
+				// 3. 주변 정점 갱신(minEdge)
+				for (Node temp = adjList[minVertex]; temp != null; temp = temp.next) {
+					if (!visited[temp.vertex] && minEdge[temp.vertex] > temp.weight) {
+						// 만약 MST에 포함되어 있지 않고, minVertex에서 i로 가는 가중치 값이 i로 가는 현재 최소 가중치(minEdge[i])보다 작다면 
+						// 인접 여부 필요 확인 필요 X
+						minEdge[temp.vertex] = temp.weight;
+						pq.offer(new int[] {temp.vertex, temp.weight});
+					}
 				}
 			}
-			sb.append('#').append(t).append(' ').append(ans).append('\n');
+			sb.append('#').append(t).append(' ').append(result).append('\n');
 		}
 		System.out.println(sb);
 	}
-
-	
-	
-	// union-find
-	private static void makeSets() {
-		parents = new int[V+1];
-		for (int i = 0; i <= V; i++) {
-			parents[i] = -1;
-		}
-	}
-	
-	private static int find(int x) {
-		if (parents[x] < 0) return x;
-		return parents[x] = find(parents[x]);
-	}
-	
-	private static boolean union(int a, int b) {
-		int aRoot = find(a);
-		int bRoot = find(b);
-		
-		if (aRoot == bRoot) return false;
-		
-		if (parents[aRoot] > parents[bRoot]) {
-			parents[aRoot] += parents[bRoot];
-			parents[bRoot] = aRoot;
-		} else {
-			parents[bRoot] += parents[aRoot];
-			parents[aRoot] = bRoot;
-		}
-		return true;
-	}
-
 }
