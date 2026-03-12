@@ -2,16 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class Solution {
-	static class Edge {
-		int to;
-		int weight;
-		
-		public Edge(int to, int weight) {
-			this.to = to;
-			this.weight = weight;
-		}
-	}
-	static int n, v;
+	static int n;
 	static double e;
 	static boolean[] visited;
 	static long[] minEdge;
