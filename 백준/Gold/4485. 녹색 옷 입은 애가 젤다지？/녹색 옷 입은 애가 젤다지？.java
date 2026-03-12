@@ -50,6 +50,8 @@ public class Main {
 			int c = cur[1];
 			int cost = cur[2];
 			
+			if (cost > dist[r][c]) continue; // 추가
+			
 			for (int i = 0; i < 4; i++) {
 				int nr = r + dr[i];
 				int nc = c + dc[i];
