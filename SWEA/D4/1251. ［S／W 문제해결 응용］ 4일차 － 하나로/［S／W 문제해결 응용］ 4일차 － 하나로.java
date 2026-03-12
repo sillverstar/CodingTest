@@ -1,126 +1,85 @@
 import java.util.*;
 import java.io.*;
 
-
 public class Solution {
-
-	static class Vertex {
-		long x;
-		long y;
+	static class Edge {
+		int to;
+		int weight;
 		
-		public Vertex(long x, long y) {
-			this.x = x;
-			this.y = y;
+		public Edge(int to, int weight) {
+			this.to = to;
+			this.weight = weight;
 		}
 	}
-
-	static class Edge implements Comparable<Edge> {
-		int startIdx;
-		int endIdx;
-		long weight;
-		
-		public Edge(int startIdx, int endIdx) {
-			this.startIdx = startIdx;
-			this.endIdx = endIdx;
-			Vertex start = islands[startIdx];
-			Vertex end = islands[endIdx];
-			long subX = Math.abs(start.x - end.x);
-			long subY = Math.abs(start.y - end.y);
-			this.weight = subX*subX + subY*subY;
-		}
-		
-		@Override
-		public int compareTo(Edge o) {
-			return Long.compare(this.weight, o.weight);
-		}
-		
-	}
-
-	static Vertex[] islands;
-	static Edge[] edgeList;
-	static int[] parents;
-	static int N;
-	static double E;
+	static int n, v;
+	static double e;
+	static boolean[] visited;
+	static long[] minEdge;
+	static int[][] input;
+	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		int T = Integer.parseInt(br.readLine());
-
+		
 		StringBuilder sb = new StringBuilder();
 		for (int t = 1; t <= T; t++) {
-			N = Integer.parseInt(br.readLine());
-			
-			islands = new Vertex[N];
-			// x, y 입력
-			StringTokenizer x = new StringTokenizer(br.readLine());
-			StringTokenizer y = new StringTokenizer(br.readLine());
-			for (int i = 0; i < N; i++) {
-				long tmpX = Long.parseLong(x.nextToken());
-				long tmpY = Long.parseLong(y.nextToken());
-				islands[i] = new Vertex(tmpX, tmpY);
+			n = Integer.parseInt(br.readLine());
+			input = new int[n][2];
+			// x, y
+			StringTokenizer stX = new StringTokenizer(br.readLine());
+			StringTokenizer stY = new StringTokenizer(br.readLine());
+			for (int i = 0; i < n; i++) {
+				// 가중치 계산
+				int x = Integer.parseInt(stX.nextToken());
+				int y = Integer.parseInt(stY.nextToken());
+				
+				input[i] = new int[] {x, y};
 			}
 			
-			E = Double.parseDouble(br.readLine());
+			e = Double.parseDouble(br.readLine());
 			
-			// 간선 리스트. 중복X, 순서X
-			makeEdgeList();
+			minEdge = new long[n];
+			visited = new boolean[n];
+			double ans = prim() * e;
 			
-			
-			Arrays.sort(edgeList);
-
-			makeSets();
-			
-			int count = 0;
-			long totalWeight = 0;
-			for (int i = 0; i < edgeList.length; i++) {
-				if (union(edgeList[i].startIdx, edgeList[i].endIdx)) {
-					totalWeight += edgeList[i].weight; // 실수를 곱해서 연산하는 대신 long으로 합을 먼저 전부 구하고 마지막에 E를 곱함
-					if (++count == N-1) break;
-				}
-			}
-			sb.append('#').append(t).append(' ').append(Math.round(totalWeight * E)).append('\n');
+			sb.append('#').append(t).append(' ').append(Math.round(ans)).append('\n');
 		}
 		System.out.println(sb);
 	}
-	
-	
-	private static void makeEdgeList() {
-		edgeList = new Edge[N*(N-1) / 2];
-		int idx = 0;
-		for (int i = 0; i < N; i++) {
-			for (int j = i+1; j < N; j++) {
-				edgeList[idx++] = new Edge(i, j);
+
+	private static long prim() {
+		// 초기값 설정
+		Arrays.fill(minEdge, Long.MAX_VALUE);
+		minEdge[0] = 0;
+
+		// 정점 개수만큼 반복
+		long result = 0;
+		for (int i = 0; i < n; i++) {
+			// 탐색 정점 찾기
+			int curIdx = -1;
+			long min = Long.MAX_VALUE;
+			for (int c = 0; c < n; c++) {
+				if (!visited[c] && min > minEdge[c]) {
+					curIdx = c;
+					min = minEdge[c];
+				}
+			}
+			
+			if (curIdx == -1) break;
+			visited[curIdx] = true;
+			result += min;
+			
+			// 인접정점 탐색: 전체 다 가중치 계산해서 확인
+			for (int next = 0; next < n; next++) {
+				long nX = (input[curIdx][0] - input[next][0]);
+				long nY = (input[curIdx][1] - input[next][1]);
+				long nextWeight = nX*nX + nY*nY;
+				if (!visited[next] && minEdge[next] > nextWeight) {
+					minEdge[next] = nextWeight;
+				}
 			}
 		}
+		return result;
 	}
-	
-	
-	private static void makeSets() {
-		parents = new int[N];
-		for (int i = 0; i < N; i++) {
-			parents[i] = -1;
-		}
-	}
-	
-	private static int find(int x) {
-		if (parents[x] < 0) return x;
-		return parents[x] = find(parents[x]);
-	}
-	
-	private static boolean union(int a, int b) {
-		int aRoot = find(a);
-		int bRoot = find(b);
-		
-		if (aRoot == bRoot) return false;
-		
-		if (parents[aRoot] > parents[bRoot]) {
-			parents[bRoot] += parents[aRoot];
-			parents[aRoot] = bRoot;
-		} else {
-			parents[aRoot] += parents[bRoot];
-			parents[bRoot] = aRoot;
-		}
-		return true;
-	}
-
 }
