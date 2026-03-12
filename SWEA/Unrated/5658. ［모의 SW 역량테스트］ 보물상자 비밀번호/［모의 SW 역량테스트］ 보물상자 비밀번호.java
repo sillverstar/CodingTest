@@ -4,7 +4,7 @@ import java.io.*;
 public class Solution {
 	static int n, k, jump;
 	static String pwInput;
-	static Set<Long> password;
+	static Set<Integer> password; // Math.pow(16, 7) > Integer.MAX_VALUE
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
@@ -29,9 +29,9 @@ public class Solution {
 			}
 			
 			// password 를 ArrayList로 변환 후, 정렬하여 k번째 수 추출
-			List<Long> list = new ArrayList<>(password);
-			Collections.sort(list, (a, b) -> Long.compare(b, a));
-			long ans = list.get(k-1);
+			List<Integer> list = new ArrayList<>(password);
+			Collections.sort(list, Collections.reverseOrder());
+			int ans = list.get(k-1);
 			
 			sb.append('#').append(t).append(' ').append(ans).append('\n');
 		}
@@ -42,7 +42,7 @@ public class Solution {
 		
 		for (int i = 0; i < 4; i++) {
 			String temp = pwInput.substring(start, start + jump);
-			long num = Integer.parseInt(temp, 16);
+			int num = Integer.parseInt(temp, 16);
 			password.add(num);
 			start = start + jump;
 		}
