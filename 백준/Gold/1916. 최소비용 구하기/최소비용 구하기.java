@@ -10,7 +10,6 @@ public class Main {
 			this.to = to;
 			this.weight = weight;
 		}
-		
 	}
 	
 	static int n, m, a, b, minCost;
@@ -47,7 +46,6 @@ public class Main {
 		minCost = 0;
 		findMinCost(a, b);
 		System.out.println(minCost);
-		
 	}
 
 	private static void findMinCost(int start, int end) {
@@ -73,10 +71,6 @@ public class Main {
 					pq.offer(new int[] {next.to, dist[next.to]});
 				}
 			}
-			
 		}
-		
 	}
-	
-	
 }
