@@ -1,79 +1,82 @@
 import java.util.*;
 import java.io.*;
 
-class Edge {
-	int to;
-	int weight;
-	
-	public Edge(int to, int weight) {
-		this.to = to;
-		this.weight = weight;
-	}
-}
-
 public class Main {
-	static int n, m, ts, td;
-	static List<List<Edge>> graph;
+	static class Edge {
+		int to;
+		int weight;
+		public Edge(int to, int weight) {
+			super();
+			this.to = to;
+			this.weight = weight;
+		}
+		
+	}
+	
+	static int n, m, a, b, minCost;
+	static List<List<Edge>> adjList;
 	static int[] dist;
 	
-	public static void main(String[] args) throws NumberFormatException, IOException {
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = null;
 		
 		n = Integer.parseInt(br.readLine());
 		m = Integer.parseInt(br.readLine());
 		
-		graph = new ArrayList<>();
+		adjList = new ArrayList<>();
 		for (int i = 0; i <= n; i++) {
-			graph.add(new ArrayList<>());
+			adjList.add(new ArrayList<>());
 		}
-		
 		dist = new int[n+1];
 		Arrays.fill(dist, Integer.MAX_VALUE);
-		
-		// 간선 입력
 		for (int i = 0; i < m; i++) {
 			st = new StringTokenizer(br.readLine());
 			
-			int sc = Integer.parseInt(st.nextToken());
-			int dc = Integer.parseInt(st.nextToken());
-			int bc = Integer.parseInt(st.nextToken());
+			int from = Integer.parseInt(st.nextToken());
+			int to = Integer.parseInt(st.nextToken());
+			int weight = Integer.parseInt(st.nextToken());
 			
-			graph.get(sc).add(new Edge(dc, bc));
+			adjList.get(from).add(new Edge(to, weight)); // 방향 X
 		}
 		
 		st = new StringTokenizer(br.readLine());
+		a = Integer.parseInt(st.nextToken());
+		b = Integer.parseInt(st.nextToken());
 		
-		ts = Integer.parseInt(st.nextToken());
-		td = Integer.parseInt(st.nextToken());
+		minCost = 0;
+		findMinCost(a, b);
+		System.out.println(minCost);
 		
-		dijkstra();
-		
-		System.out.println(dist[td]);
 	}
 
-	
-	private static void dijkstra() {
-		// 우선순위 큐
-		PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
-		
-		// 초기값 넣기(ts, cost)
-		pq.offer(new int[] {ts, 0});
-		dist[ts] = 0;
+	private static void findMinCost(int start, int end) {
+		PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[1], b[1]));
+		dist[start] = 0;
+		pq.offer(new int[] {start, dist[start]});
 		
 		while (!pq.isEmpty()) {
 			int[] cur = pq.poll();
-			int start = cur[0];
+			int now = cur[0];
 			int cost = cur[1];
-			if (dist[start] < cost) continue;
-			// 인접 정점 확인
-			for (Edge next : graph.get(start)) {
-				int nextCost = cost + next.weight;
-				if (nextCost < dist[next.to]) {
-					pq.offer(new int[] {next.to, nextCost});
-					dist[next.to]= nextCost; 
+			
+			if (dist[now] < cost) continue;
+
+			if (now == end) {
+				minCost = cost;
+				return;
+			}
+			
+			for (Edge next : adjList.get(now)) {
+				if (dist[next.to] > cost + next.weight) {
+					dist[next.to] = cost + next.weight;
+					pq.offer(new int[] {next.to, dist[next.to]});
 				}
 			}
+			
 		}
+		
 	}
+	
+	
 }
