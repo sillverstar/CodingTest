@@ -40,6 +40,8 @@ public class Solution {
 
 	// 중복 O, 순서 O
 	private static void dfs(int cnt) {
+		// 가지치기
+		if (minCnt == 0) return;
 		// 종료 조건
 		if (cnt == n) {
 			// 남은 벽돌 개수 갱신
@@ -47,7 +49,6 @@ public class Solution {
 			minCnt = Math.min(minCnt, count);
 			return;
 		}
-		
 		
 		for (int col = 0; col < w; col++) {
 			int[][] temp = new int[h][w];
