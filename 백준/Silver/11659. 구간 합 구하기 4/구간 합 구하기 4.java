@@ -10,18 +10,12 @@ public class Main {
 		int n = Integer.parseInt(st.nextToken()); // 수의 개수
 		int m = Integer.parseInt(st.nextToken()); // 구해야 하는 횟수
 		
-		// 배열 입력
+		// 배열 입력받으면서 누적합 게산
 		int[] arr = new int[n+1];
 		st = new StringTokenizer(br.readLine());
 		for (int i = 1; i <= n; i++) {
-			arr[i] = Integer.parseInt(st.nextToken());
+			arr[i] = arr[i-1] + Integer.parseInt(st.nextToken());
 		}
-		
-		// 누적합 계산
-		for (int i = 1; i <= n; i++) {
-			arr[i] = arr[i-1] + arr[i];
-		}
-		
 		
 		// 구간 계산
 		StringBuilder sb = new StringBuilder();
@@ -34,5 +28,6 @@ public class Main {
 			sb.append(arr[end] - arr[start-1]).append('\n');
 		}
 		System.out.println(sb);
+		br.close();
 	}
 }
