@@ -17,24 +17,26 @@ public class Main {
 		
 		int target = Integer.parseInt(br.readLine());
 		
+		
 		int startIdx = 0;
-		int endIdx = N - 1;
+		int endIdx = N-1;
+		
 		int count = 0;
 		
-		while (startIdx < endIdx) {
+		while (endIdx != startIdx) {
 			int sum = arr[startIdx] + arr[endIdx];
-			
 			if (sum == target) {
 				count++;
 				startIdx++;
+			}
+			else if (sum > target) {
 				endIdx--;
-			} else if (sum > target) {
-				endIdx--;
-			} else {
+			}
+			else if (sum < target) {
 				startIdx++;
 			}
 		}
-		
 		System.out.println(count);
+		br.close();
 	}
 }
