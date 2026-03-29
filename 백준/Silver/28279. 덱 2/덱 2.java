@@ -1,20 +1,16 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
 public class Main {
 	static public Deque<Integer> deque;
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
-		int n = Integer.parseInt(br.readLine());
+		int N = Integer.parseInt(br.readLine());
 		deque = new ArrayDeque<>();
 		
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			
 			int command = Integer.parseInt(st.nextToken());
