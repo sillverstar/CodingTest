@@ -9,20 +9,13 @@ public class Main {
 		
 		N = Integer.parseInt(br.readLine());
 		
-		dp = new long[N+1];
+		dp = new long[N+1]; // 공간복잡도: O(N)
 		
-		// dp 채우기
-		if (N >= 3) {
-			dp[1] = 1;
-			dp[2] = 2;
-			for (int i = 3; i <= N; i++) {
-				dp[i] = (dp[i-1] + dp[i-2]) % 10007;
-			}
-			
-			System.out.println(dp[N]);
+		dp[1] = 1;
+		if (N >= 2) dp[2] = 2;
+		for (int i = 3; i <= N; i++) { // 시간복잡도: O(N)
+			dp[i] = (dp[i-1] + dp[i-2]) % 10007;
 		}
-		else {
-			System.out.println(N);
-		}
+		System.out.println(dp[N]);
 	}
 }
