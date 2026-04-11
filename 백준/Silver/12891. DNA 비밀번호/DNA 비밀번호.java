@@ -1,73 +1,71 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
 public class Main {
-	
-	// 만들 수 있는 비밀번호인지 확인
-	static boolean check(int[] now, int[] acgt) {
-		for (int i = 0; i < 4; i++) {
-			if (now[i] < acgt[i]) { // 하나라도 충족 안되면 false
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	// ACGT에 따른 배열 위치 반환
-	static int idx(char c) {
-		if (c == 'A') { return 0; }
-		else if (c == 'C') { return 1; }
-		else if (c == 'G') { return 2; }
-		else { return 3; }
-		
-	}
+    static int S, P;
+    static int[] dna;
+    static final int DNA_NUM = 4;
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		
-		int s = Integer.parseInt(st.nextToken()); // 전체 길이
-		int p = Integer.parseInt(st.nextToken()); // 윈도우 크기
-		
-		// 문자열 저장
-		String dna = br.readLine();
-		
-		int[] acgt = new int[4]; // A C G T 최소 개수
-		st = new StringTokenizer(br.readLine());
-		for (int i = 0; i < 4; i++) {
-			acgt[i] = Integer.parseInt(st.nextToken());
-		}
-	
-		int cnt = 0;
-		int[] now  = new int[4]; // 현재 윈도우의 A C G T 개수
+    static int[] current;
+    static int[] target = new int[DNA_NUM];
 
-		// 초기 윈도우
-		for (int i = 0; i < p; i++) {
-			char c = dna.charAt(i);
-			now[idx(c)]++;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-		}
-		
-		// 비밀번호 되나 체크
-		if (check(now, acgt)) {
-			cnt++;
-		}
-		
-		// 나머지
-		for (int i = p; i < s; i++) {
-			// 한 개 빼고 now 업데이트
-			char out = dna.charAt(i - p);
-			now[idx(out)]--;
+        S = Integer.parseInt(st.nextToken());
+        P = Integer.parseInt(st.nextToken());
 
-			// 한 개 넣고 now 업데이트
-			char in = dna.charAt(i);
-			now[idx(in)]++;
-			
-			// 비밀번호 되나 체크
-			if (check(now, acgt)) {
-				cnt++;
-			}
-		}
-		System.out.println(cnt);
-	}
+        dna = new int[S];
+
+        String s = br.readLine();
+        for (int i = 0; i < S; i++) {
+            char temp = s.charAt(i);
+            // A:0 C:1 G:2 T:3
+            dna[i] = (temp == 'A')? 0 : (temp == 'C')? 1 : (temp == 'G')? 2 : 3;
+        }
+
+//        System.out.print(Arrays.toString(dna));
+
+        // A:0 C:1 G:2 T:3
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < DNA_NUM; i++) {
+            target[i] = Integer.parseInt(st.nextToken());
+        }
+
+
+        int left = 0;
+        int right = P - 1;
+
+        int count = 0;
+        current = new int[DNA_NUM];
+        for (int i = 0; i < P; i++) {
+            current[dna[i]]++;
+        }
+//        System.out.println(Arrays.toString(current));
+
+        while (true) {
+            if (canMake()) {
+                count++;
+            }
+
+            if (right == (S - 1)) break;
+
+            current[dna[left]]--;
+            left++;
+            right++;
+            current[dna[right]]++;
+        }
+
+        System.out.println(count);
+    }
+
+    private static boolean canMake() {
+        for (int i = 0; i < DNA_NUM; i++) {
+            if (current[i] < target[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
